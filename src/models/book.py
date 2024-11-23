@@ -1,5 +1,7 @@
-from model import Model
-from ..configuration import Config
+from setuptools.sandbox import override_temp
+
+from src.models.model import Model
+from src.configuration import Config
 
 class Book(Model):
   """Book model

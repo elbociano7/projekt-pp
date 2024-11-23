@@ -4,6 +4,11 @@ class Config:
     "DEBUG": False,
     "API_DRIVER": "google",
     "DATABASE_DRIVER": "database",
+    "DATABASE_HOST": "localhost",
+    "DATABASE_PORT": "3303",
+    "DATABASE_USER": "root",
+    "DATABASE_PASSWORD": "",
+    "DATABASE_NAME": "dane",
     "DEFAULT_BOOK_COUNT": 10,
     "STORE_BOOKS_LOCALLY": True,
   }

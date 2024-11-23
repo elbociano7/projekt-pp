@@ -5,7 +5,7 @@ class Model:
   table: str = ""
   id: int = None
   readonly: bool = False
-  driver: str = Config.get("DATABASE_DRIVER")
+  driver: str = Config().get("DATABASE_DRIVER")
 
   def getByField(self, field: str, value: any, driver: str):
     drv = Driver(driver)
@@ -13,9 +13,10 @@ class Model:
   
   def get(self, id: int):
     return self.findByField("id", id)
-  
-  def getTableName(self):
-    return str.lower(self.__class__)+"s"
+
+  @classmethod
+  def getTableName(cls):
+    return str.lower(cls.__name__)+"s"
   
 
   # RELATIONS

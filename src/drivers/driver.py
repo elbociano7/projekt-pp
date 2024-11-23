@@ -1,3 +1,12 @@
+import importlib
+
+
+def getDriver(driver):
+  print("starting driver: ", driver)
+  return importlib.import_module(f"src.drivers.{driver}.main")
+
 class Driver:
-  def __init__(self, driver: str):
-    print("starting driver: ", driver)
+  pass
+
+class DriverException(Exception):
+  pass
