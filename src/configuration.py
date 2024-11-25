@@ -11,6 +11,7 @@ class Config:
     "DATABASE_NAME": "dane",
     "DEFAULT_BOOK_COUNT": 10,
     "STORE_BOOKS_LOCALLY": True,
+    "PAGINATION_LIMIT": 50
   }
 
   def get(self, key: str) -> any:
@@ -23,3 +24,5 @@ class Config:
         any: Configuration value
     """
     return self.configuration[key]
+
+CONFIG = Config()

@@ -1,33 +1,72 @@
-from ..drivers.driver import Driver
-from ..configuration import Config
+from src.drivers.database.main import Database
+from src.drivers.driver import Driver, getDriver
+from src.configuration import Config
+
 
 class Model:
-  table: str = ""
-  id: int = None
-  readonly: bool = False
-  driver: str = Config().get("DATABASE_DRIVER")
+    serializable = ['id']
+    table: str = ""
+    id: int = None
+    readonly: bool = False
+    driver: Driver = getDriver(Config().get("DATABASE_DRIVER")).Database()
 
-  def getByField(self, field: str, value: any, driver: str):
-    drv = Driver(driver)
-    return drv.get(field, value, self)
-  
-  def get(self, id: int):
-    return self.findByField("id", id)
+    def getByField(self, field: str, value: any, driver: Driver = None):
+        if driver is None:
+            driver = self.driver
+        data = driver.get(self.__class__, {field: value})
+        print(data)
+        if data is not None:
+            self.paramsToObject(data)
 
-  @classmethod
-  def getTableName(cls):
-    return str.lower(cls.__name__)+"s"
-  
+    def get(self, id: int = None):
+        if id is None:
+            id = self.id
+        return self.getByField("id", id)
 
-  # RELATIONS
+    def getVars(self):
+        return self.serializable
 
-  def hasOne(self, object: str):
-    field_name = str.lower(object.__class__)+"_id"
-    object_id = getattr(object, field_name)
-    return object.find(object_id)
+    def save(self):
+        if self.id is None:
+            self.id = self.driver.insert(self).getLastRowId()
+        else:
+            self.driver.update(self)
+        self.load()
 
-  def belongsToMany(self, object: str):
-    field_name = str.lower(self.__class__)+"_id"
-    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  TODO
-    
-  
+    def paramsToObject(self, params):
+        for param in params:
+            self.__setattr__(param, params[param])
+
+    def isConnected(self):
+        return self.id is not None
+
+    def load(self):
+        if self.isConnected():
+            self.get(self.id)
+
+    @staticmethod
+    def getMany(cls, key, value):
+        drv: Driver = getDriver(Config().get("DATABASE_DRIVER")).Database()
+        data = drv.get(cls, {key:value}, limit=None)
+        objects = []
+        for object in data:
+            obj = cls()
+            obj.paramsToObject(object)
+            objects.append(obj)
+        return objects
+
+    @classmethod
+    def getTableName(cls):
+        return str.lower(cls.__name__) + "s"
+
+    # RELATIONS
+
+    def hasOne(self, object):
+        field_name = str.lower(object.__name__) + "_id"
+        object_id = getattr(self, field_name)
+        return object().get(object_id)
+
+    def belongsToMany(self, object):
+        row_name = str.lower(self.__class__.__name__) + "_id"
+        return object.getMany(object, row_name, self.id)
+

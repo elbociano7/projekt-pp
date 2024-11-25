@@ -1,8 +1,5 @@
 from app import App
-from src.drivers.database.main import Database
-from src.drivers.database.query import Query
-from src.drivers.driver import getDriver
-from src.models.book import Book
+from src.models.reader import Reader
 
 app = App()
 app.run()
@@ -17,11 +14,17 @@ app.run()
 # }
 #
 # query.makeQuery("select", data)
-# print(query.execute())
+# print(query.execute()
 
-dbdriver = getDriver('database')
-db: Database = dbdriver.Database()
-data = (db.get('isbn', 2137, Book))
+
+reader = Reader()
+
+reader.get(1)
+if(reader.isConnected()):
+    loans = reader.loans()
+    for loan in loans:
+        print(bool(loan.returned))
+
 
 
 
