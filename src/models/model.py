@@ -34,6 +34,7 @@ class Model:
         self.load()
 
     def paramsToObject(self, params):
+        print('params', params)
         for param in params:
             self.__setattr__(param, params[param])
 
@@ -49,9 +50,14 @@ class Model:
         drv: Driver = getDriver(Config().get("DATABASE_DRIVER")).Database()
         data = drv.get(cls, {key:value}, limit=None)
         objects = []
-        for object in data:
+        if isinstance(data, list):
+            for object in data:
+                obj = cls()
+                obj.paramsToObject(object)
+                objects.append(obj)
+        else:
             obj = cls()
-            obj.paramsToObject(object)
+            obj.paramsToObject(data)
             objects.append(obj)
         return objects
 
@@ -69,4 +75,19 @@ class Model:
     def belongsToMany(self, object):
         row_name = str.lower(self.__class__.__name__) + "_id"
         return object.getMany(object, row_name, self.id)
+
+    @staticmethod
+    def filterCollectionBy(collection: table, filters):
+        return_collection = []
+        for item in collection:
+            filters_fullfill = True
+            for filter in filters.keys():
+                if getattr(item, filter) != filters[filter]:
+                    filters_fullfill = False
+            if filters_fullfill:
+                return_collection.append(item)
+        return return_collection
+
+
+
 

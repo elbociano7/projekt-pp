@@ -13,7 +13,10 @@ class DBWorker:
   def prepareInsert(object):
     data = {}
     for prop in object.getVars():
-      data[prop] = getattr(object, prop)
+      if(hasattr(object, prop)):
+        data[prop] = getattr(object, prop)
+      else:
+        data[prop] = None
     query = QueryBuilder.fromConfig()
     query.makeInsertQuery(object.getTableName(), data)
     return query

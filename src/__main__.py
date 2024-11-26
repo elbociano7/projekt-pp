@@ -1,4 +1,7 @@
+import datetime
+
 from app import App
+from src.models.book import Book
 from src.models.reader import Reader
 
 app = App()
@@ -17,13 +20,16 @@ app.run()
 # print(query.execute()
 
 
-reader = Reader()
+book = Book()
 
-reader.get(1)
-if(reader.isConnected()):
-    loans = reader.loans()
-    for loan in loans:
-        print(bool(loan.returned))
+book.get(1)
+
+reader = Reader()
+reader.get(2)
+reader.loanBook(book, datetime.datetime.now() + datetime.timedelta(days=30))
+print(reader.loans())
+
+print('is available: ', book.isAvailable())
 
 
 
