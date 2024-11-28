@@ -1,8 +1,13 @@
 class Config:
+  """
+  Configuration class
+  """
 
+  #Main configuration data
   configuration = {
     "DEBUG": False,
     "API_DRIVER": "google",
+    "API_URL": "https://www.googleapis.com/",
     "DATABASE_DRIVER": "database",
     "DATABASE_HOST": "localhost",
     "DATABASE_PORT": "3301",

@@ -3,6 +3,9 @@ from tkinter import Frame, Label
 
 from src.ui.translations import Tr
 
+"""
+UI HELPER FUNCTIONS FILE
+"""
 
 def makeTable(data, master):
     """

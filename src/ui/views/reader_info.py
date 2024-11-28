@@ -37,13 +37,13 @@ class VTemplate(View):
         helpers.makeTable(table_data, master)
 
         # AKTYWNE WYPOZYCZENIA
-        Label(master, text="Aktywne wypozyczenia").pack(padx=10, pady=10)
+        Label(master, text=Tr('active_loans')).pack(padx=10, pady=10)
 
         loans_columns = ('loan_id', 'book', 'start_date', 'end_date')
         treeview = Treeview(master, columns=loans_columns, show='headings')
         treeview.tag_configure('expired', foreground='red')
-        treeview.column('loan_id', width=60, anchor='center')
-        treeview.column('book', width=100, anchor='center')
+        treeview.column('loan_id', width=100, anchor='center')
+        treeview.column('book', width=500, anchor='center')
         treeview.column('start_date', width=150, anchor='center')
         treeview.column('end_date', width=150, anchor='center')
         for col in loans_columns:
@@ -80,11 +80,11 @@ class VTemplate(View):
                 treeview.delete(item)
 
         (Button(buttons,
-               text="Powrot",
+               text=Tr('back'),
                command = self.onBackClick)
          .grid(row=0, column=0))
         returnButton = Button(buttons,
-            text="Zwrot",
+            text=Tr('return'),
             command=returnBooks,
             state=tkinter.DISABLED)
         returnButton.grid(row=0, column=1)

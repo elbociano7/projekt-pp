@@ -38,7 +38,7 @@ class VTemplate(View):
         helpers.makeTable(table_data, master)
 
         # AKTYWNE WYPOZYCZENIA
-        Heading(master, text="Aktywne wypozyczenia")
+        Heading(master, text=Tr('active_loans'))
 
         loans_columns = ('loan_id', 'reader', 'start_date', 'end_date')
         treeview = Treeview(master, columns=loans_columns, show='headings')
@@ -73,16 +73,16 @@ class VTemplate(View):
 
         buttons = Frame(master)
         (Button(buttons,
-               text="Powrot",
+               text=Tr('back'),
                command = self.onBackClick)
          .grid(row=0, column=0))
         (Button(buttons,
-               text="Wypozycz",
+               text=Tr('loan'),
                state=tkinter.NORMAL if self.available else tkinter.DISABLED, #None if self.available else '#777'
                command=self.onLoanClick)
          .grid(row=0, column=1))
         returnButton = Button(buttons,
-                              text="Zwrot",
+                              text=Tr('return'),
                               command=returnBooks,
                               state=tkinter.DISABLED)
         returnButton.grid(row=0, column=2)

@@ -8,10 +8,21 @@ class Reader(Model):
   serializable = ['id', 'firstname', 'lastname']
 
   def loans(self):
+    """
+    Loans relation
+    :return:
+    """
     from src.models.loan import Loan
     return self.belongsToMany(Loan)
 
   def loanBook(self, book, end_time: datetime):
+    """
+    Method for loaning a book. It creates a relationship object between the reader and the book
+    with data given in function arguments.
+    :param book: Book to make relation with
+    :param end_time: Loan end time
+    :return:
+    """
     from src.models.loan import Loan
     if book.isAvailable():
       print(book.id, self.id)

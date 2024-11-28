@@ -2,6 +2,7 @@ import copy
 import tkinter
 from tkinter import StringVar, Label, Button, Entry, Frame
 
+from src.ui.translations import Tr
 from src.ui.view import View
 
 class VTemplate(View):
@@ -30,31 +31,32 @@ class VTemplate(View):
             widget.destroy()
         for result in results:
             frame = Frame(self.frame)
+            frame.columnconfigure(0, weight=10, uniform='name')
+            frame.columnconfigure(1, weight=1, uniform='name')
             Label(
                 frame,
                 text=f"{result['author']} - {result['title']} ({result['year']})",
                 justify='left',
-                width=40
-            ).pack(side=tkinter.LEFT, padx=2, anchor=tkinter.W)
+            ).grid(row=0, column=0, padx = 2, sticky=tkinter.W)
             Button(
                 frame,
                 text="Wybierz",
                 command=lambda r_id=result['id']: self.onEditClick(r_id),
-            ).pack(side=tkinter.RIGHT, padx=2, anchor=tkinter.W)
-            frame.pack()
+            ).grid(row=0, column=1, padx = 2, sticky=tkinter.W)
+            frame.pack(fill='x')
 
 
     def buildView(self, master):
         if not self.loan:
             Button(
                 master,
-                text='Wyszukiwanie czytelnikow',
+                text=Tr('search_reader'),
                 command=self.onChangeSearchClick,
                 width=180,
             ).pack(side=tkinter.TOP, anchor=tkinter.N, pady = (0, 20), padx = 5)
         Label(
             master,
-            text='Wyszukaj ksiazke (nazwa, autor lub id)',
+            text=Tr('search_book_str'),
             width=180
         ).pack(padx=5, pady=1)
         Entry(
@@ -64,7 +66,7 @@ class VTemplate(View):
         ).pack(padx=5, pady=1)
         Button(
             master,
-            text='Szukaj',
+            text=Tr('search'),
             command=self.onSearchClick,
             width=180,
         ).pack(padx=5, pady=1)

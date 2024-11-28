@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import StringVar, Label, Button, Entry, Frame
 
+from src.ui.translations import Tr
 from src.ui.view import View
 
 class VTemplate(View):
@@ -28,6 +29,10 @@ class VTemplate(View):
         pass
 
     @staticmethod
+    def onAddClick():
+        pass
+
+    @staticmethod
     def onEditClick(book_id):
         pass
 
@@ -40,30 +45,31 @@ class VTemplate(View):
             widget.destroy()
         for result in results:
             frame = Frame(self.frame)
+            frame.columnconfigure(0, weight=1, uniform='name')
+            frame.columnconfigure(1, weight=0, uniform='name')
             Label(
                 frame,
                 text = f"{result['firstname']} {result['lastname']}",
                 justify='left',
-                width=40
-            ).pack(side=tkinter.LEFT, padx = 2, anchor=tkinter.W)
+            ).grid(row=0, column=0, padx = 2, sticky=tkinter.W)
             Button(
                 frame,
-                text=f"Wybierz ({result['id']})",
+                text=Tr('select'),
                 command=lambda r_id=result['id']: self.onEditClick(r_id),
-            ).pack(side=tkinter.RIGHT, padx = 2, anchor=tkinter.W)
-            frame.pack()
+            ).grid(row=0, column=1, padx = 2, sticky=tkinter.W)
+            frame.pack(fill='x')
 
     def buildView(self, master):
         if not self.loan:
             Button(
                 master,
-                text='Wyszukiwanie ksiazek',
+                text=Tr('search_book'),
                 command=self.onChangeSearchClick,
                 width=180,
             ).pack(side=tkinter.TOP, anchor=tkinter.N, pady = (0, 20), padx = 5)
         Label(
             master,
-            text='Wyszukaj czytelnika (imię, nazwisko lub id)',
+            text=Tr('search_reader_str'),
             width=180
         ).pack(padx=5, pady=1)
         Entry(
@@ -75,6 +81,12 @@ class VTemplate(View):
             master,
             text='Szukaj',
             command=self.onSearchClick,
+            width=180,
+        ).pack(padx=5, pady=1)
+        Button(
+            master,
+            text='Dodaj',
+            command=self.onAddClick,
             width=180,
         ).pack(padx=5, pady=1)
         self.frame = Frame(master, height=100, width=180)

@@ -15,7 +15,6 @@ class App:
   def __init__(self):
     """App initialization
     """
-    print('app initialized')
     self.main_window = MainWindow()
 
   def run(self):
@@ -26,7 +25,6 @@ class App:
     mechanism using a `RoutingController`.
     """
     from src.controllers.routing import RoutingController
-    print('app running')
     self.main_window.open()
 
     router = RoutingController()

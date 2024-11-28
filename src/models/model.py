@@ -27,6 +27,7 @@ class Model:
     table: str = ""
     id: int = None
     readonly: bool = False
+    connected: bool = False
     driver: Driver = getDriver(Config().get("DATABASE_DRIVER")).Database()
 
     def getByField(self, field: str, value: any, driver: Driver = None):
@@ -47,6 +48,7 @@ class Model:
             driver = self.driver
         data = driver.get(self.__class__, {field: value})
         if data is not None:
+            self.connected = True
             self.paramsToObject(data)
         return self
 
@@ -74,14 +76,14 @@ class Model:
         """
         Saves the current state of the object to the database. If the object does not
         have an ID, it inserts the object into the database and sets the ID. If the
-        object already has an ID, it updates the existing record in the database.
+        object already §has an ID, it updates the existing record in the database.
         After saving, it reloads the object.
 
         :raises DatabaseError: If there is an issue with the database operation.
 
         :return: None
         """
-        if self.id is None:
+        if self.id is None or self.connected is False:
             self.id = self.driver.insert(self).getLastRowId()
         else:
             self.driver.update(self)
@@ -110,7 +112,7 @@ class Model:
         It determines connectivity based on the presence of a valid
         identifier.
         """
-        return self.id is not None
+        return self.id is not None and self.connected
 
     def load(self):
         """
@@ -123,8 +125,9 @@ class Model:
         :ivar isConnected: Callable[[], bool]: Function to check if the source is connected.
         :ivar get: Callable[[str], None]: Function to retrieve data given an identifier.
         """
-        if self.isConnected():
+        if self.id is not None:
             self.get(self.id)
+            self.connected = True
 
     def serialize(self):
         """

@@ -43,6 +43,12 @@ class BookController(Controller):
 
     @staticmethod
     def viewBook(router, params):
+        """
+        Create and handle view for book info
+        :param router:
+        :param params:
+        :return:
+        """
         view = View.Load('book_info')
         book = Book()
         book.get(params['book_id'])

@@ -26,6 +26,11 @@ class ReaderController(Controller):
 
         view.onEditClick = openView
 
+        def add():
+            router.changeRoute('reader_add')
+
+        view.onAddClick = add
+
         def prepareSearch():
             search = view.searchStr.get()
             objects = Reader.searchBySingleString(Reader, ('id', 'firstname', 'lastname'), search)
@@ -77,5 +82,25 @@ class ReaderController(Controller):
         #         print('loan')
         #
         #     view.onLoanClick = loan
+
+        router.app.view(view)
+
+    @staticmethod
+    def readerAdd(router, params):
+        view = View.Load('reader_add')
+
+        def save():
+            reader = Reader()
+            reader.firstname = view.firstname.get()
+            reader.lastname = view.lastname.get()
+            reader.save()
+            router.changeRoute('reader_list')
+
+        view.onSaveClick = save
+
+        def cancel():
+            router.changeRoute('reader_list')
+
+        view.onCancelClick = cancel
 
         router.app.view(view)

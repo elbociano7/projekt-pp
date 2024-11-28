@@ -15,6 +15,7 @@ class RoutingController(Controller):
         'book_loan': BookController.loanBook,
         'reader_list': ReaderController.list,
         'reader_info': ReaderController.readerInfo,
+        'reader_add': ReaderController.readerAdd,
     }
 
     route = None

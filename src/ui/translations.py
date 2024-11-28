@@ -15,6 +15,21 @@ translations = {
     "end_date": "Termin zwrotu",
     "firstname": "Imię",
     "lastname": "Nazwisko",
+    "book": "Ksiązka",
+    "loan_id": "Id wypozyczenia",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "search": "Szukaj",
+    "return": "Zwróć",
+    "loan": "Wypozycz",
+    "search_book_str": "Wyszukaj ksiązke (id/tytuł/autor)",
+    "search_reader_str": "Wyszukaj czytelnika (id/imie/nazwisko)",
+    "search_book": "Wyszukaj ksiązkę",
+    "search_reader": "Wyszukaj czytelnika",
+    "loan_timespan": "Długość wypozyczenia",
+    "active_loans": "Aktywne wypozyczenia",
+    "back": "Powrót",
+    "select": "Wybierz",
 }
 
 def Tr(key):

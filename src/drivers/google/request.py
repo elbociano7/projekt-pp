@@ -1,12 +1,45 @@
+from urllib.parse import urlparse, urlencode
+
 import requests
 
-class Request:
+from src.configuration import CONFIG
 
-    def __init__(self, server_url, endpoint, payload):
+
+class Request:
+    endpoint = None
+
+    def __init__(self, server_url):
         self.url = server_url
-        self.endpoint = endpoint
-        self.payload = payload
+
+    @staticmethod
+    def fromConfig():
+        """
+        Make a request object from configuration.
+
+        :return Request: Request object
+        """
+        return Request(CONFIG.get('API_URL'))
+
+    def build(self, endpoint, payload):
+        """
+        Build a request object from payload and endpoint. Payload is encoded as GET request's parameters.
+        :param endpoint:
+        :param payload:
+        :return:
+        """
+        payload = str(urlencode(payload))
+        print(payload)
+        self.endpoint = endpoint + "?" + payload
+
 
     def make(self):
-        response = requests.get(f"{self.url}{self.endpoint}", data=self.payload)
-        print(response)
+        """
+        Makes a request based on object's configuration and returns request data if response code is 200.
+        :return array: Response data
+        """
+        if self.endpoint is None:
+            raise Exception("Endpoint is not set")
+        response = requests.get(f"{self.url}{self.endpoint}")
+        if response.ok:
+            return response.json()
+        return []

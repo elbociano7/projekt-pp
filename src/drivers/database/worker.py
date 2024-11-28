@@ -92,5 +92,8 @@ class DBWorker:
     """
     data = {}
     for prop in object.getVars():
-      data[prop] = getattr(object, prop)
+      if hasattr(object, prop):
+        data[prop] = getattr(object, prop)
+      else:
+        data[prop] = ''
     return data
