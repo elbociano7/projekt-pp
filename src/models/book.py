@@ -9,7 +9,7 @@ class Book(Model):
   """Book model
   """
 
-  serializable = ['id', 'author', 'title', 'year', 'image', 'isbn']
+  serializable = ['id', 'author', 'title', 'year', 'image', 'isbn', 'itemcount']
 
   readonly = True
 
@@ -18,6 +18,7 @@ class Book(Model):
     if self.isConnected() is False:
       apiDriver = getDriver(CONFIG.get("API_DRIVER")).Api()
       self.getByField(key, value, apiDriver)
+    return self
 
   def loans(self):
     from src.models.loan import Loan
@@ -27,7 +28,7 @@ class Book(Model):
     count = self.itemcount
     loans = Model.filterCollectionBy(self.loans(), {'returned': False})
     if len(loans) >= count:
-      raise BookException('Brak dostepnych ksiazek!')
+      return False
     else:
       return True
 

@@ -6,7 +6,6 @@ class Loan(Model):
 
   def reader(self):
     from src.models.reader import Reader
-    print(Reader)
     return self.hasOne(Reader)
   
   def book(self):

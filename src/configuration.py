@@ -5,7 +5,7 @@ class Config:
     "API_DRIVER": "google",
     "DATABASE_DRIVER": "database",
     "DATABASE_HOST": "localhost",
-    "DATABASE_PORT": "3303",
+    "DATABASE_PORT": "3301",
     "DATABASE_USER": "root",
     "DATABASE_PASSWORD": "",
     "DATABASE_NAME": "dane",
@@ -17,12 +17,10 @@ class Config:
   def get(self, key: str) -> any:
     """Get configuration key's value
 
-    Args:
-        key (str): Key
-
-    Returns:
-        any: Configuration value
+    :param key str: configuration key
+    :return any: configuration value
     """
     return self.configuration[key]
 
+#Glocal config object
 CONFIG = Config()
