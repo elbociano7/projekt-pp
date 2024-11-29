@@ -7,6 +7,10 @@ class Database(Driver):
   This class interfaces with a database system through a set of methods
   to perform create, read, update, and search operations.
   """
+
+  def checkDatabaseStructure(self):
+    pass
+
   def get(self, modelClass, filters, limit = 1):
     """
     Retrieves data from a database based on the given model class, filters, and limit.

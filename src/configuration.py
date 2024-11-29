@@ -1,3 +1,6 @@
+import os
+
+
 class Config:
   """
   Configuration class
@@ -16,7 +19,8 @@ class Config:
     "DATABASE_NAME": "dane",
     "DEFAULT_BOOK_COUNT": 10,
     "STORE_BOOKS_LOCALLY": True,
-    "PAGINATION_LIMIT": 50
+    "PAGINATION_LIMIT": 50,
+    "CACHE_PATH": os.path.dirname(os.path.realpath(__file__)) + "/cache",
   }
 
   def get(self, key: str) -> any:

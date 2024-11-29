@@ -1,12 +1,16 @@
 import datetime
+import io
 import tkinter
-from tkinter import StringVar, Label, Button, Entry, Frame
+from tkinter import StringVar, Label, Button, Entry, Frame, PhotoImage
 from tkinter.ttk import Treeview
+from PIL import Image, ImageTk
 
+from src.configuration import CONFIG
 from src.ui.translations import Tr
 from src.ui.view import View
 from src.ui.views import helpers
 from src.ui.views.helpers import Heading
+from src.ui.webimage import WebImage
 
 
 class VTemplate(View):
@@ -32,10 +36,24 @@ class VTemplate(View):
     available = False
 
     def buildView(self, master):
+        dataframe = Frame(master)
+        dataframe.columnconfigure(0, weight=0)
+        dataframe.columnconfigure(1, weight=2)
+        tableframe = Frame(dataframe)
         table_data = {}
         for key in self.book.keys():
             table_data[key] = self.book[key]
-        helpers.makeTable(table_data, master)
+        table_data.pop('image')
+        helpers.makeTable(table_data, tableframe)
+
+        img = Image.open(WebImage.get(self.book['image']))
+
+        imgtk = ImageTk.PhotoImage(img.resize((80,120)))
+        imglabel = Label(dataframe, image=imgtk)
+        imglabel.image = imgtk
+        imglabel.grid(row=0, column=0, padx=10, pady=10, sticky='w')
+        tableframe.grid(row=0, column=1, sticky='w')
+        dataframe.pack(fill='x')
 
         # AKTYWNE WYPOZYCZENIA
         Heading(master, text=Tr('active_loans'))
