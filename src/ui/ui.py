@@ -1,4 +1,4 @@
-from tkinter import Label
+from tkinter import Label, messagebox
 
 import tkinter
 
@@ -76,6 +76,10 @@ class Window:
             self.running = True
         #self.main_frame.update()
         #self.root.mainloop()
+
+    @staticmethod
+    def makeErrorMessageBox(title, text):
+        messagebox.showerror(title, text)
 
 class MainWindow(Window):
     """

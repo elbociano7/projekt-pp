@@ -1,6 +1,6 @@
 from src.configuration import CONFIG
-from src.drivers.driver import getDriver
-from src.ui.ui import MainWindow
+from src.drivers.driver import getDriver, DriverException
+from src.ui.ui import MainWindow, Window
 from src.ui.view import View
 
 
@@ -28,8 +28,11 @@ class App:
     """
 
     db = getDriver(CONFIG.get('DATABASE_DRIVER')).Database()
-    db.checkDatabase()
-
+    try:
+      db.checkDatabase()
+    except DriverException as e:
+      Window.makeErrorMessageBox('error', str(e))
+      return
 
     from src.controllers.routing import RoutingController
     self.main_window.open()
