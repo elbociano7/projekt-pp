@@ -25,7 +25,6 @@ class Reader(Model):
     """
     from src.models.loan import Loan
     if book.isAvailable():
-      print(book.id, self.id)
       loan = Loan()
       loan.reader_id = self.id
       loan.book_id = book.id

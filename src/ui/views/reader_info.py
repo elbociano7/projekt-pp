@@ -39,11 +39,12 @@ class VTemplate(View):
         # AKTYWNE WYPOZYCZENIA
         Label(master, text=Tr('active_loans')).pack(padx=10, pady=10)
 
-        loans_columns = ('loan_id', 'book', 'start_date', 'end_date')
+        loans_columns = ('loan_id', 'book_id', 'book', 'start_date', 'end_date')
         treeview = Treeview(master, columns=loans_columns, show='headings')
         treeview.tag_configure('expired', foreground='red')
         treeview.column('loan_id', width=100, anchor='center')
-        treeview.column('book', width=500, anchor='center')
+        treeview.column('book_id', width=100, anchor='center')
+        treeview.column('book', width=400, anchor='center')
         treeview.column('start_date', width=150, anchor='center')
         treeview.column('end_date', width=150, anchor='center')
         for col in loans_columns:
@@ -58,7 +59,7 @@ class VTemplate(View):
              "",
                      tkinter.END,
                      text=id,
-                     values=(loan['id'], loan['book'], loan['start_date'], loan['end_date']),
+                     values=(loan['id'], loan['book_id'], loan['book'], loan['start_date'], loan['end_date']),
                      tags=(('expired',) if expired else ('ongoing',))
                  )
 

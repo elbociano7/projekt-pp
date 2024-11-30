@@ -13,8 +13,12 @@
 - Instalacja pythona w odpowiedniej wersji
 - __tylko na macOS__ instalacja biblioteki python-tk: `brew install python-tk`
 - Instalacja bibliotek pythona z pliku `requirements.txt`
-- Uruchomienie bazy danych
+- Utworzenie oraz ruchomienie bazy danych (np za pomocą pakietu `xampp` lub `lampp`)
 - Uzupełnienie konfiguracji bazy danych w pliku `src/configuration.py`
 
 ### Uruchomienie
-uruchomienie za pomocą komendy `python3 run.py` lub korzystając z `.venv`: `.venv/bin/python3.13 run.py`
+uruchomienie:
+- za pomocą komendy `python3 run.py` lub `py run.py`
+- korzystając z `.venv` po wcześniejszym jego utworzeniu: `.venv/bin/python3.13 run.py`
+
+> Inne informacje o programie zawarte są w pliku `docs/program.md`

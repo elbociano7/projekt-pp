@@ -46,7 +46,6 @@ class QueryBuilder:
         """
         if self.query is None:
             return False
-        print("QUERY: ", self.query, ", PARAMETERS: ", self.params)
         self.cursor.execute(self.query, self.params)
         return self
 

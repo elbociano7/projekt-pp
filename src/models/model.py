@@ -277,7 +277,6 @@ class Model:
     def entryExists(cls, id: str):
         drv: Driver = getDriver(Config().get("DATABASE_DRIVER")).Database()
         data = drv.get(cls, {'id': id}, 1)
-        print(data)
         if data is None:
             return False
         return True

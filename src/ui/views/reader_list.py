@@ -40,24 +40,34 @@ class VTemplate(View):
     def onChangeSearchClick():
         pass
 
+    @staticmethod
+    def goBack():
+        pass
+
     def setResults(self, results):
         for widget in self.frame.winfo_children():
             widget.destroy()
         for result in results:
             frame = Frame(self.frame)
-            frame.columnconfigure(0, weight=1, uniform='name')
-            frame.columnconfigure(1, weight=0, uniform='name')
+            frame.columnconfigure(0, weight=4, uniform='name')
+            frame.columnconfigure(1, weight=2, uniform='name')
             Label(
                 frame,
                 text = f"{result['firstname']} {result['lastname']}",
                 justify='left',
-            ).grid(row=0, column=0, padx = 2, sticky=tkinter.W)
+                width=500,
+                wraplength=500,
+                anchor='center',
+                padx = 20
+            ).grid(row=0, column=0, padx = 2, sticky=tkinter.E)
             Button(
                 frame,
                 text=Tr('select'),
                 command=lambda r_id=result['id']: self.onEditClick(r_id),
             ).grid(row=0, column=1, padx = 2, sticky=tkinter.W)
-            frame.pack(fill='x')
+            frame.pack()
+        if not results:
+            Label(self.frame, text=Tr('no_results'), anchor='center').pack(fill='x')
 
     def buildView(self, master):
         if not self.loan:
@@ -67,6 +77,13 @@ class VTemplate(View):
                 command=self.onChangeSearchClick,
                 width=180,
             ).pack(side=tkinter.TOP, anchor=tkinter.N, pady = (0, 20), padx = 5)
+        else:
+            Button(
+                master,
+                text=Tr('back'),
+                command=self.goBack,
+                width=180,
+            ).pack(side=tkinter.TOP, anchor=tkinter.N, pady=(0, 20), padx=5)
         Label(
             master,
             text=Tr('search_reader_str'),

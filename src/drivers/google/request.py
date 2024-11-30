@@ -28,7 +28,6 @@ class Request:
         :return:
         """
         payload = str(urlencode(payload))
-        print(payload)
         self.endpoint = endpoint + "?" + payload
 
 

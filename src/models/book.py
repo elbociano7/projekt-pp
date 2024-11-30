@@ -60,7 +60,6 @@ class Book(Model):
     """
 
     def processBook(id, data):
-      print(data)
       bookObject = Book()
       if not Book.entryExists(Book, id):
         bookObject.paramsToObject(data)
@@ -74,7 +73,6 @@ class Book(Model):
     word = word.strip(' ')
     if word == '':
       raise BookSearchException("search_field_cannot_be_empty")
-    print(word[0:3])
     if len(word) > 2 and word[0:3] == "id:":
       if len(word) == 3:
         raise BookSearchException("invalid_book_id")

@@ -7,7 +7,7 @@ translations = {
     "year": "Rok wydania",
     "id": "Identyfikator",
     "itemcount": "Liczba egzemplarzy",
-    "isbn": "Kod",
+    "isbn": "ISBN (lub inny - TYP:KOD)",
     "image": "Zdjęcie",
     "reader_id": "Id czytelnika",
     "returned": "Zwrócono",
@@ -26,15 +26,17 @@ translations = {
     "search_reader_str": "Wyszukaj czytelnika (id/imie/nazwisko)",
     "search_book": "Wyszukaj ksiązkę",
     "search_reader": "Wyszukaj czytelnika",
-    "loan_timespan": "Długość wypozyczenia",
+    "loan_timespan": "Długość wypozyczenia (dni)",
     "active_loans": "Aktywne wypozyczenia",
     "back": "Powrót",
     "select": "Wybierz",
     "reader": "Czytelnik",
     "add": "Dodaj",
     'error': "Błąd",
+    'no_results': "Brak wyników dla danej frazy.",
     "search_field_cannot_be_empty": "To pole wyszukiwania nie moze być puste!",
-    "invalid_book_id": "Błędny identyfikator!"
+    'invalid_days': "Błędna ilość dni!",
+    "invalid_book_id": "Błędny identyfikator!",
 }
 
 def Tr(key):

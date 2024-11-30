@@ -44,6 +44,8 @@ class VTemplate(View):
                 command=lambda r_id=result['id']: self.onEditClick(r_id),
             ).grid(row=0, column=1, padx = 2, sticky=tkinter.W)
             frame.pack(fill='x')
+        if not results:
+            Label(self.frame, text=Tr('no_results'), anchor='center').pack(fill='x')
 
 
     def buildView(self, master):

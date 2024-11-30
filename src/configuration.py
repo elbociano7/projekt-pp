@@ -8,18 +8,26 @@ class Config:
 
   #Main configuration data
   configuration = {
-    "DEBUG": False,
+    # API
     "API_DRIVER": "google",
     "API_URL": "https://www.googleapis.com/",
+
+    # DATABASE
     "DATABASE_DRIVER": "database",
     "DATABASE_HOST": "localhost",
     "DATABASE_PORT": "3301",
     "DATABASE_USER": "root",
     "DATABASE_PASSWORD": "",
     "DATABASE_NAME": "dane",
+
+    # BOOK CONFIGURATION
     "DEFAULT_BOOK_COUNT": 10,
     "STORE_BOOKS_LOCALLY": True,
-    "PAGINATION_LIMIT": 50,
+
+    # FORCE RELOAD VIEW AFTER RETURNING A BOOK
+    "RELOAD_AFTER_RETURN": True,
+
+    # PATHS
     "BASE_APP_PATH": os.path.dirname(os.path.realpath(__file__)),
     "CACHE_PATH": os.path.dirname(os.path.realpath(__file__)) + "/cache",
   }

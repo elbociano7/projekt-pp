@@ -88,7 +88,6 @@ class DBWorker:
     """
     query = QueryBuilder.fromConfig()
     q = query.makeSelectQuery(modelClass.getTableName(), filters, limit, offset, operator)
-    print(q)
     result = q.execute().fetch()
     return result
 

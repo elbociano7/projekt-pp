@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from tkinter import messagebox
 
+from src.configuration import CONFIG
 from src.controllers.controller import Controller
 from src.models.book import Book, BookSearchException
 from src.models.loan import Loan
@@ -62,7 +63,6 @@ class BookController(Controller):
         loans = book.loans()
         view.loans = []
         for loan in loans:
-            print(loan)
             reader = Reader()
             reader.get(loan.reader_id)
             data = loan.serialize()
@@ -80,7 +80,12 @@ class BookController(Controller):
             loan.returned = True
             loan.save()
 
+        def afterReturn():
+            if CONFIG.get("RELOAD_AFTER_RETURN"):
+                router.changeRoute('book_info', {'book_id': book.id})
+
         view.returnBook = returnBook
+        view.afterReturn = afterReturn
 
 
 
@@ -104,12 +109,16 @@ class BookController(Controller):
             router.changeRoute('book_info', {'book_id': book.id})
 
         def loanBook(days):
-            end_time = datetime.now().replace(hour=23, minute=59, second=59) + timedelta(days=int(days))
+            if not days.isdigit() or int(days) < 1:
+                messagebox.showerror(Tr('error'), Tr('invalid_days'))
+                return
+            end_time = datetime.now() + timedelta(days=int(days))
+            end_time = end_time.replace(hour=23, minute=59, second=58)
             reader.loanBook(book, end_time)
             goBack()
 
         view.onSaveClick = loanBook
-        view.onBackClick = goBack
+        view.onCancelClick = goBack
 
         view.book = book.serialize()
         view.reader = reader.serialize()

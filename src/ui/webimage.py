@@ -26,10 +26,14 @@ class WebImage:
         if exists(fpath):
             return io.BytesIO(open(fpath, 'rb').read())
         else:
-            with request.urlopen(url) as u:
-                data = u.read()
+            try:
+                with request.urlopen(url) as u:
+                    data = u.read()
+            except Exception:
+                print('Error downloading image')
+                no_image_img = CONFIG.get('BASE_APP_PATH') + '/ui/no_image.jpg'
+                return io.BytesIO(open(no_image_img, 'rb').read())
             f = open(fpath, 'wb')
-
             f.write(data)
             f.close()
             return io.BytesIO(data)

@@ -28,10 +28,8 @@ class ApiWorker:
     def getItem(self, id):
         rq = Request.fromConfig()
         ep = self.endpoint + '/' + id
-        print(ep)
         rq.build(ep, {})
         response = rq.make()
-        print(response, 'rp')
         if(type(response) is dict):
             return self.processObject(response)
         return None

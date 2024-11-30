@@ -11,8 +11,12 @@ najstarszych)
 - Konfiguracja domyslnej ilosci ksiazki
 (w konfiguracji programu: plik `src/configuration.py`)
 
+Dane dodawane są do bazy danych podczas wyszukiwania. Przy wejściu w widok ksiązki pobierana jest jej okładka a następnie jest zapisywana w pamięci cache.
+
 > Z powodu błędów obsługi biblioteki `tkinter` 
-> mozliwe są chwilowe błędy w zmianie widoku programu. 
-> Jezeli po zmianie widoku nie pojawia się nowy widok 
-> nalezy przesunąć okno programu lekko w którąkolwiek 
+> mozliwe są chwilowe błędy w zmianie widoku programu
+> na systemie macOS (niezaobserwowane na Windows ale
+> istnieje ryzyko ze tez się moze pojawić). Jezeli po 
+> zmianie widoku nie pojawia się nowy widok nalezy 
+> przesunąć lekko okno programu lekko w którąkolwiek 
 > stronę.

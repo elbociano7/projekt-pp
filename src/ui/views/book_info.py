@@ -1,7 +1,7 @@
 import datetime
 import io
 import tkinter
-from tkinter import StringVar, Label, Button, Entry, Frame, PhotoImage
+from tkinter import StringVar, Label, Button, Entry, Frame, PhotoImage, TclError
 from tkinter.ttk import Treeview
 from PIL import Image, ImageTk
 
@@ -17,6 +17,8 @@ class VTemplate(View):
     book = {}
     loans = []
 
+    returnButton = None
+
     @staticmethod
     def onBackClick():
         pass
@@ -30,7 +32,11 @@ class VTemplate(View):
         pass
 
     @staticmethod
-    def returnBook():
+    def returnBook(book):
+        pass
+
+    @staticmethod
+    def afterReturn():
         pass
 
     available = False
@@ -44,11 +50,11 @@ class VTemplate(View):
         for key in self.book.keys():
             table_data[key] = self.book[key]
         table_data.pop('image')
-        helpers.makeTable(table_data, tableframe)
+        helpers.makeTable(table_data, tableframe, image=True)
 
         img = Image.open(WebImage.get(self.book['image']))
 
-        imgtk = ImageTk.PhotoImage(img.resize((80,120)))
+        imgtk = ImageTk.PhotoImage(img.resize((80, 120)))
         imglabel = Label(dataframe, image=imgtk)
         imglabel.image = imgtk
         imglabel.grid(row=0, column=0, padx=10, pady=10, sticky='w')
@@ -58,13 +64,14 @@ class VTemplate(View):
         # AKTYWNE WYPOZYCZENIA
         Heading(master, text=Tr('active_loans'))
 
-        loans_columns = ('loan_id', 'reader', 'start_date', 'end_date')
+        loans_columns = ('loan_id', 'reader', 'reader_id', 'start_date', 'end_date')
         treeview = Treeview(master, columns=loans_columns, show='headings')
         treeview.tag_configure('expired', foreground='red')
-        treeview.column('loan_id', width=60, anchor='center')
-        treeview.column('reader', width=100, anchor='center')
-        treeview.column('start_date', width=150, anchor='center')
-        treeview.column('end_date', width=150, anchor='center')
+        treeview.column('loan_id', width=100, anchor='center')
+        treeview.column('reader_id', width=100, anchor='center')
+        treeview.column('reader', width=300, anchor='center')
+        treeview.column('start_date', width=200, anchor='center')
+        treeview.column('end_date', width=200, anchor='center')
         for col in loans_columns:
             treeview.heading(col, text=Tr(col))
 
@@ -78,16 +85,22 @@ class VTemplate(View):
                     "",
                     tkinter.END,
                     text=id,
-                    values=(loan['id'], loan['reader'], loan['start_date'], loan['end_date']),
+                    values=(loan['id'], loan['reader'], loan['reader_id'], loan['start_date'], loan['end_date']),
                     tags=(('expired',) if expired else ('ongoing',))
                 )
 
         treeview.pack(fill='x')
 
         def returnBooks():
-            for item in treeview.selection():
+            selection = treeview.selection()
+            for item in selection:
+
                 self.returnBook(treeview.item(item)['values'][0])
-                treeview.delete(item)
+                try:
+                    treeview.delete(item)
+                except TclError:
+                    print('Tkinter error')
+            self.afterReturn()
 
         buttons = Frame(master)
         (Button(buttons,

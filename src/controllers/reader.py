@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from src.configuration import CONFIG
 from src.controllers.controller import Controller
 from src.models.book import Book
 from src.models.loan import Loan
@@ -17,17 +18,18 @@ class ReaderController(Controller):
         def openView():
             pass
 
+        add = None
 
         if type(params) is not dict:
             openView = lambda reader_id: router.changeRoute('reader_info', {'reader_id': reader_id})
+            add = lambda: router.changeRoute('reader_add')
         elif params['action'] == 'loan':
             view.loan = True
+            view.goBack = lambda: router.changeRoute('book_info', {'book_id': params['book_id']})
             openView = lambda reader_id, book_id = params['book_id']: router.changeRoute('book_loan', {'reader_id': reader_id, 'book_id': book_id})
+            add = lambda: router.changeRoute('reader_add', {'action': 'loan', 'book_id': params['book_id']})
 
         view.onEditClick = openView
-
-        def add():
-            router.changeRoute('reader_add')
 
         view.onAddClick = add
 
@@ -38,7 +40,6 @@ class ReaderController(Controller):
             for reader in objects:
                 data = reader.serialize()
                 results.append(data)
-            print(results)
             view.setResults(results)
 
         view.onSearchClick = prepareSearch
@@ -72,16 +73,10 @@ class ReaderController(Controller):
             loan.get(loan_id)
             loan.returned = True
             loan.save()
+            if CONFIG.get("RELOAD_AFTER_RETURN"):
+                router.changeRoute('reader_info', {'book_id': reader.id})
 
         view.returnBook = returnBook
-
-        # if book.isAvailable():
-        #     view.available = True
-        #
-        #     def loan():
-        #         print('loan')
-        #
-        #     view.onLoanClick = loan
 
         router.app.view(view)
 
@@ -89,18 +84,22 @@ class ReaderController(Controller):
     def readerAdd(router, params):
         view = View.Load('reader_add')
 
+        back = None
+
+        if type(params) is not dict:
+            back = lambda: router.changeRoute('reader_list')
+        elif params['action'] == 'loan':
+            back = lambda: router.changeRoute('reader_list', {"action": "loan", "book_id": params['book_id']})
+
         def save():
             reader = Reader()
             reader.firstname = view.firstname.get()
             reader.lastname = view.lastname.get()
             reader.save()
-            router.changeRoute('reader_list')
+            back()
 
         view.onSaveClick = save
 
-        def cancel():
-            router.changeRoute('reader_list')
-
-        view.onCancelClick = cancel
+        view.onCancelClick = back
 
         router.app.view(view)

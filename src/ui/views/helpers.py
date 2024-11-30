@@ -7,7 +7,7 @@ from src.ui.translations import Tr
 UI HELPER FUNCTIONS FILE
 """
 
-def makeTable(data, master):
+def makeTable(data, master, image = False):
     """
     Generates a table from provided data and displays it within the given master widget.
 
@@ -19,8 +19,11 @@ def makeTable(data, master):
     :return: None
     """
     table = Frame(master)
-    table.grid_columnconfigure(0, weight=1, uniform='a')
-    table.grid_columnconfigure(1, weight=1, uniform='a')
+    table.grid_columnconfigure(0, weight=2, uniform='a')
+    if image is False:
+        table.grid_columnconfigure(1, weight=2, uniform='a')
+    else:
+        table.grid_columnconfigure(1, weight=3, uniform='a')
     i = 0
     for key in data.keys():
         tlb = Label(table, text = Tr(key), justify=tkinter.LEFT, foreground="#999")

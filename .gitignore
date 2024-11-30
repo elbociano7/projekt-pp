@@ -1,1 +1,2 @@
-src/cache
+src/cache/img/*
+src/testing.py
