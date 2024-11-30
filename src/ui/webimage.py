@@ -14,6 +14,13 @@ class WebImage:
 
     @staticmethod
     def get(url: str):
+        if exists(CONFIG.get('CACHE_PATH')) == False:
+            mkdir(CONFIG.get('CACHE_PATH'))
+        if exists(CONFIG.get('CACHE_PATH') + '/img') == False:
+            mkdir(CONFIG.get('CACHE_PATH') + '/img')
+
+        print('Image URL: ' + str(url))
+
         if url == '' or url is None:
             no_image_img = CONFIG.get('BASE_APP_PATH') + '/ui/no_image.jpg'
             return io.BytesIO(open(no_image_img, 'rb').read())
