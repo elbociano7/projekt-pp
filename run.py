@@ -1,2 +1,2 @@
 import src.__main__ as main
-main.runApp()
+main.__main__()

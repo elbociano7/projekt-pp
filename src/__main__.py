@@ -1,7 +1,5 @@
 from src.app import App
 
-def runApp():
+def __main__():
     app = App()
     app.run()
-
-runApp()
