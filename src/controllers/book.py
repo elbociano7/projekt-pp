@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
+from tkinter import messagebox
 
 from src.controllers.controller import Controller
-from src.models.book import Book
+from src.models.book import Book, BookSearchException
 from src.models.loan import Loan
 from src.models.reader import Reader
+from src.ui.translations import Tr
 from src.ui.view import View
 
 
@@ -28,7 +30,11 @@ class BookController(Controller):
 
         def prepareSearch():
             search = view.searchStr.get()
-            objects = Book.searchBySingleString(Book, ('id', 'title', 'author', 'year'), search)
+            try:
+                objects = Book.searchBySingleString(Book, ('id', 'title', 'author', 'year'), search)
+            except BookSearchException as e:
+                messagebox.showerror(Tr('error'), Tr(str(e)))
+                return
             results = []
             for book in objects:
                 data = book.serialize()

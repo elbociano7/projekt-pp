@@ -25,9 +25,9 @@ class Window:
     title = "Window"
     style = {
         'background': None,
-        'minsize': (900,500),
-        'maxsize': (900,500),
-        'geometry': "900x500+50+50"
+        'minsize': (900,600),
+        'maxsize': (900,600),
+        'geometry': "900x600+50+50"
     }
     root = tkinter.Tk()
     main_frame = tkinter.Frame(root)

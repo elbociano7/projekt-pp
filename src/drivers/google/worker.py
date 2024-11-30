@@ -21,47 +21,65 @@ class ApiWorker:
         response = rq.make()
         items = []
 
+        for i in range(0, min(50, len(response['items']))):
+            items.append(self.processObject(response['items'][i]))
+        return items
+
+    def getItem(self, id):
+        rq = Request.fromConfig()
+        ep = self.endpoint + '/' + id
+        print(ep)
+        rq.build(ep, {})
+        response = rq.make()
+        print(response, 'rp')
+        if(type(response) is dict):
+            return self.processObject(response)
+        return None
+
+    def processObject(self, data):
         def authorsToString(authors):
             authors_string = ''
             for author in authors:
                 authors_string += author + ', '
             return authors_string
 
+        item = {}
+        item['id'] = data['id']
 
-        for i in range(0, min(50, len(response['items']))):
-            item = {}
-            item['id'] = response['items'][i]['id']
-            item['title'] = response['items'][i]['volumeInfo']['title']
+        if 'title' in data['volumeInfo']:
+            item['title'] = data['volumeInfo']['title']
+        else:
+            item['title'] = ''
 
-            if 'authors' in response['items'][i]['volumeInfo']:
-                item['author'] = authorsToString(response['items'][i]['volumeInfo']['authors'])
-            else:
-                item['author'] = ''
+        if 'authors' in data['volumeInfo']:
+            item['author'] = authorsToString(data['volumeInfo']['authors'])
+        else:
+            item['author'] = ''
 
-            if 'publishedDate' in response['items'][i]['volumeInfo']:
-                item['year'] = (response['items'][i]['volumeInfo']['publishedDate'].split('-'))[0]
-            else:
-                item['year'] = ''
+        if 'publishedDate' in data['volumeInfo']:
+            item['year'] = (data['volumeInfo']['publishedDate'].split('-'))[0]
+        else:
+            item['year'] = ''
 
-            if 'imageLinks' in response['items'][i]['volumeInfo']:
-                item['image'] = response['items'][i]['volumeInfo']['imageLinks']['thumbnail']
-            else:
-                item['image'] = ''
+        if 'imageLinks' in data['volumeInfo']:
+            item['image'] = data['volumeInfo']['imageLinks']['thumbnail']
+        else:
+            item['image'] = ''
 
-            identifiers = {}
-            if 'industryIdentifiers' in response['items'][i]['volumeInfo']:
-                for identifier in response['items'][i]['volumeInfo']['industryIdentifiers']:
-                    identifiers[identifier['type']] = identifier['identifier']
+        identifiers = {}
+        if 'industryIdentifiers' in data['volumeInfo']:
+            for identifier in data['volumeInfo']['industryIdentifiers']:
+                identifiers[identifier['type']] = identifier['identifier']
 
-                if 'ISBN_13' in identifiers.keys():
-                    item['isbn'] = identifiers['ISBN_13']
-                elif 'ISBN_10' in identifiers.keys():
-                    item['isbn'] = identifiers['ISBN_10']
-                elif len(identifiers) > 0:
-                    k = list(identifiers)[-1]
-                    item['isbn'] = identifiers[k]
-            else:
-                item['isbn'] = ''
+            if 'ISBN_13' in identifiers.keys():
+                item['isbn'] = identifiers['ISBN_13']
+            elif 'ISBN_10' in identifiers.keys():
+                item['isbn'] = identifiers['ISBN_10']
+            elif len(identifiers) > 0:
+                k = list(identifiers)[-1]
+                item['isbn'] = identifiers[k]
+        else:
+            item['isbn'] = ''
 
-            items.append(item)
-        return items
+        return item
+

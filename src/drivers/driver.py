@@ -2,10 +2,17 @@ import importlib
 
 
 def getDriver(driver):
-  print("starting driver: ", driver)
+  """
+  Returns a driver instance
+  :param str: driver name
+  :return:
+  """
   return importlib.import_module(f"src.drivers.{driver}.main")
 
 class Driver:
+  """
+  Basic data driver methods
+  """
   def get(self, modelClass, filters, limit):
     return False
   def insert(self, object):

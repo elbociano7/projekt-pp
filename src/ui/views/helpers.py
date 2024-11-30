@@ -25,7 +25,7 @@ def makeTable(data, master):
     for key in data.keys():
         tlb = Label(table, text = Tr(key), justify=tkinter.LEFT, foreground="#999")
         tlb.grid(row=i, column = 0, sticky=tkinter.E)
-        dlb = Label(table, text = data[key], justify=tkinter.LEFT)
+        dlb = Label(table, text = data[key], justify=tkinter.LEFT, wraplength=300)
         dlb.grid(row=i, column = 1, sticky=tkinter.W)
         i += 1
     table.pack(fill='x')

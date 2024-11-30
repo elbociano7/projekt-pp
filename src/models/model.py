@@ -25,7 +25,7 @@ class Model:
     """
     serializable = ['id']
     table: str = ""
-    id: int = None
+    id: str = None
     readonly: bool = False
     connected: bool = False
     driver: Driver = getDriver(Config().get("DATABASE_DRIVER")).Database()
@@ -83,8 +83,8 @@ class Model:
 
         :return: None
         """
-        if self.id is None or self.connected is False:
-            self.id = self.driver.insert(self).getLastRowId()
+        if self.connected is False:
+            self.driver.insert(self)
         else:
             self.driver.update(self)
         self.load()
@@ -112,7 +112,8 @@ class Model:
         It determines connectivity based on the presence of a valid
         identifier.
         """
-        return self.id is not None and self.connected
+        #return self.id is not None and self.connected
+        return self.entryExists(self.__class__, self.id)
 
     def load(self):
         """
@@ -271,6 +272,15 @@ class Model:
         """
         row_name = str.lower(self.__class__.__name__) + "_id"
         return object.getMany(object, row_name, self.id)
+
+    @staticmethod
+    def entryExists(cls, id: str):
+        drv: Driver = getDriver(Config().get("DATABASE_DRIVER")).Database()
+        data = drv.get(cls, {'id': id}, 1)
+        print(data)
+        if data is None:
+            return False
+        return True
 
     @staticmethod
     def filterCollectionBy(collection: table, filters):

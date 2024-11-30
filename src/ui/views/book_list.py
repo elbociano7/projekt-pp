@@ -36,7 +36,7 @@ class VTemplate(View):
             Label(
                 frame,
                 text=f"{result['author']} - {result['title']} ({result['year']})",
-                justify='left',
+                justify='left', wraplength=800
             ).grid(row=0, column=0, padx = 2, sticky=tkinter.W)
             Button(
                 frame,

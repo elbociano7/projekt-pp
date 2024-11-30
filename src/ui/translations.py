@@ -7,7 +7,7 @@ translations = {
     "year": "Rok wydania",
     "id": "Identyfikator",
     "itemcount": "Liczba egzemplarzy",
-    "isbn": "ISBN",
+    "isbn": "Kod",
     "image": "Zdjęcie",
     "reader_id": "Id czytelnika",
     "returned": "Zwrócono",
@@ -22,7 +22,7 @@ translations = {
     "search": "Szukaj",
     "return": "Zwróć",
     "loan": "Wypozycz",
-    "search_book_str": "Wyszukaj ksiązke (id/tytuł/autor)",
+    "search_book_str": "Wyszukaj ksiązke \r\n(max 10 wyników. dostępne filtry: id:identyfikator, intitle:tekst, inauthor:tekst, isbn:tekst np: \"id:12345abcd\")",
     "search_reader_str": "Wyszukaj czytelnika (id/imie/nazwisko)",
     "search_book": "Wyszukaj ksiązkę",
     "search_reader": "Wyszukaj czytelnika",
@@ -30,6 +30,11 @@ translations = {
     "active_loans": "Aktywne wypozyczenia",
     "back": "Powrót",
     "select": "Wybierz",
+    "reader": "Czytelnik",
+    "add": "Dodaj",
+    'error': "Błąd",
+    "search_field_cannot_be_empty": "To pole wyszukiwania nie moze być puste!",
+    "invalid_book_id": "Błędny identyfikator!"
 }
 
 def Tr(key):

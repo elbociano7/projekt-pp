@@ -8,8 +8,11 @@ class Database(Driver):
   to perform create, read, update, and search operations.
   """
 
-  def checkDatabaseStructure(self):
-    pass
+  def checkDatabase(self):
+
+    DBWorker.checkDatabase()
+
+
 
   def get(self, modelClass, filters, limit = 1):
     """
@@ -28,7 +31,8 @@ class Database(Driver):
     :return: The result of the prepared SELECT query.
     :rtype: any
     """
-    return DBWorker.prepareSelect(modelClass, filters, limit)
+    data = DBWorker.prepareSelect(modelClass, filters, limit)
+    return data
 
   def insert(self, object):
     """

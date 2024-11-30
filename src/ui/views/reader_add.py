@@ -22,7 +22,7 @@ class VTemplate(View):
     def buildView(self, master):
         Label(master, text=Tr('firstname')).pack()
         Entry(master, textvariable=self.firstname).pack()
-        Label(master, text=Tr('firstname')).pack()
+        Label(master, text=Tr('lastname')).pack()
         Entry(master, textvariable=self.lastname).pack()
 
         buttons = Frame(master)

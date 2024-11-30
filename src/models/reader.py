@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.models.book import Book, BookException
+from src.models.book import Book, BookSearchException
 from src.models.model import Model
 
 class Reader(Model):
@@ -34,7 +34,7 @@ class Reader(Model):
       loan.returned = False
       loan.save()
     else:
-      raise BookException('Book not available')
+      raise BookSearchException('book_not_available')
 
 
   

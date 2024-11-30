@@ -20,6 +20,7 @@ class Config:
     "DEFAULT_BOOK_COUNT": 10,
     "STORE_BOOKS_LOCALLY": True,
     "PAGINATION_LIMIT": 50,
+    "BASE_APP_PATH": os.path.dirname(os.path.realpath(__file__)),
     "CACHE_PATH": os.path.dirname(os.path.realpath(__file__)) + "/cache",
   }
 

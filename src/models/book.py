@@ -58,22 +58,41 @@ class Book(Model):
     :return: A list of `Book` objects containing the search results.
     :rtype: list of Book
     """
+
+    def processBook(id, data):
+      print(data)
+      bookObject = Book()
+      if not Book.entryExists(Book, id):
+        bookObject.paramsToObject(data)
+        bookObject.itemcount = CONFIG.get("DEFAULT_BOOK_COUNT")
+        bookObject.save()
+      else:
+        bookObject.get(id)
+      return bookObject
+
     apiDriver = getDriver(CONFIG.get("API_DRIVER")).Api()
+    word = word.strip(' ')
+    if word == '':
+      raise BookSearchException("search_field_cannot_be_empty")
+    print(word[0:3])
+    if len(word) > 2 and word[0:3] == "id:":
+      if len(word) == 3:
+        raise BookSearchException("invalid_book_id")
+      id = word[3::]
+      data = apiDriver.get(cls, id)
+      if data is not None:
+        id = data['id']
+        return [processBook(id, data)]
+      return []
     data = apiDriver.searchSingleWord(cls, word)
     books = []
     for book in data:
-      bookObject = Book()
-      bookObject.get(book['id'])
-      if not bookObject.isConnected():
-        bookObject.paramsToObject(book)
-        bookObject.itemcount = CONFIG.get("DEFAULT_BOOK_COUNT")
-        bookObject.save()
-      books.append(bookObject)
+      books.append(processBook(book['id'], book))
     return books
 
 
 
-class BookException(Exception):
+class BookSearchException(Exception):
   pass
 
   

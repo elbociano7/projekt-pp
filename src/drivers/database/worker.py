@@ -12,6 +12,21 @@ class DBWorker:
     return query.execute()
 
   @staticmethod
+  def checkDatabase():
+    tables = ['readers', 'books', 'loans']
+    query = QueryBuilder.fromConfig()
+    fail = False
+    for table in tables:
+      if not query.checkDb(table):
+        fail = True
+        break
+
+    if fail:
+      print("Database check failed. Setting up a new configuration")
+      query.setupDb()
+
+
+  @staticmethod
   def prepareInsert(object):
     """
     Prepare an insert query for the given object by extracting its properties and

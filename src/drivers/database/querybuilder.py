@@ -1,9 +1,10 @@
+import os
 from inspect import Parameter
 
 from mysql import connector
 from pypika import Query, Table, Field, FormatParameter, MySQLQuery, Criterion, functions
 
-from src.configuration import Config
+from src.configuration import Config, CONFIG
 from src.drivers.driver import DriverException
 
 class QueryBuilder:
@@ -35,7 +36,7 @@ class QueryBuilder:
         self.query = None
         try:
             self.connection = connector.connect(host=server, port=port, user=username, password=password, database=database)
-            self.cursor = self.connection.cursor()
+            self.cursor = self.connection.cursor(buffered=False)
         except connector.Error as err:
             raise DriverException(err)
 
@@ -45,7 +46,7 @@ class QueryBuilder:
         """
         if self.query is None:
             return False
-        print('query', self.query)
+        print("QUERY: ", self.query, ", PARAMETERS: ", self.params)
         self.cursor.execute(self.query, self.params)
         return self
 
@@ -70,7 +71,6 @@ class QueryBuilder:
     def fetch(self):
         """
         Fetches all rows from the cursor and returns them in a structured format.
-
         This method retrieves every row from the database cursor. If no rows are
         retrieved, it returns None. If multiple rows are retrieved, it returns a list
         of dictionaries where each dictionary represents a row. If only one row is
@@ -203,5 +203,40 @@ class QueryBuilder:
         for i in range(len(keys)):
             data[keys[i][0]] = values[0][i]
         return data
+
+    @staticmethod
+    def getDebugCursor():
+        connection = connector.connect(
+            host=CONFIG.get('DATABASE_HOST'),
+            port=CONFIG.get('DATABASE_PORT'),
+            user=CONFIG.get('DATABASE_USER'),
+            password=CONFIG.get('DATABASE_PASSWORD'),
+            database=CONFIG.get('DATABASE_NAME'))
+        cursor = connection.cursor(buffered=True)
+        return (connection, cursor)
+
+    def checkDb(self, table):
+        (conn, cursor) = self.getDebugCursor()
+        query = f"SELECT * FROM information_schema.`TABLES` WHERE `TABLE_NAME` = '{table}'"
+        cursor.execute(query)
+        if cursor.rowcount == 0:
+            cursor.close()
+            return False
+        else:
+            cursor.close()
+            return True
+
+    def setupDb(self):
+        (conn, cursor) = self.getDebugCursor()
+        lines = []
+        with open(os.path.dirname(os.path.realpath(__file__))+"/schema.sql") as f:
+            lines = f.readlines()
+        for line in lines:
+            line = line.strip('\n')
+            cursor.execute(line)
+        #cursor.execute(f.read(), multi=True)
+        #cursor.close()
+        #conn.close()
+
 
 

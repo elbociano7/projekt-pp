@@ -4,14 +4,14 @@ from src.drivers.google.worker import ApiWorker
 
 class Api(Driver):
 
-    def get(self, objectClass, filters):
+    def get(self, objectClass, id):
         """
-        Not supported in this API
+        Get an object by its id
         :param objectClass:
         :param filters:
         :return:
         """
-        raise Exception("Unsupported API usage")
+        return ApiWorker().getItem(id)
     def insert(self, object):
         """
         Not supported in this API
