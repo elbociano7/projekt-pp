@@ -1,16 +1,20 @@
 from datetime import datetime
+from pyexpat.errors import messages
+from re import search
 
 from src.configuration import CONFIG
 from src.controllers.controller import Controller
 from src.models.book import Book
 from src.models.loan import Loan
 from src.models.reader import Reader
+from src.ui.translations import Tr
+from src.ui.ui import Window
 from src.ui.view import View
 
 
 class ReaderController(Controller):
     @staticmethod
-    def list(router, params):
+    def list(router, params = {}):
 
         view = View.Load('reader_list')
         view.onChangeSearchClick = lambda: router.changeRoute('book_list')
@@ -20,21 +24,30 @@ class ReaderController(Controller):
 
         add = None
 
-        if type(params) is not dict:
-            openView = lambda reader_id: router.changeRoute('reader_info', {'reader_id': reader_id})
-            add = lambda: router.changeRoute('reader_add')
-        elif params['action'] == 'loan':
-            view.loan = True
-            view.goBack = lambda: router.changeRoute('book_info', {'book_id': params['book_id']})
-            openView = lambda reader_id, book_id = params['book_id']: router.changeRoute('book_loan', {'reader_id': reader_id, 'book_id': book_id})
-            add = lambda: router.changeRoute('reader_add', {'action': 'loan', 'book_id': params['book_id']})
+        open_view = lambda reader_id: router.changeRoute('reader_info', {'reader_id': reader_id})
+        add = lambda: router.changeRoute('reader_add')
 
-        view.onEditClick = openView
+        prepare_search_string = None
+
+        if type(params) is dict:
+            if 'action' in params and params['action'] == 'loan':
+                view.loan = True
+                view.goBack = lambda: router.changeRoute('book_info', {'book_id': params['book_id']})
+                open_view = lambda reader_id, book_id = params['book_id']: router.changeRoute('book_loan', {'reader_id': reader_id, 'book_id': book_id})
+                add = lambda: router.changeRoute('reader_add', {'action': 'loan', 'book_id': params['book_id']})
+            if 'search' in params and params['search'] != '' and params['search'] is not None:
+                prepare_search_string = params['search']
+
+        view.onEditClick = open_view
 
         view.onAddClick = add
 
-        def prepareSearch():
-            search = view.searchStr.get()
+        def prepareSearch(custom_string = None):
+            search = ''
+            if custom_string is None:
+                search = view.searchStr.get()
+            else:
+                search = custom_string
             objects = Reader.searchBySingleString(Reader, ('id', 'firstname', 'lastname'), search)
             results = []
             for reader in objects:
@@ -44,7 +57,9 @@ class ReaderController(Controller):
 
         view.onSearchClick = prepareSearch
 
-        view.onEditClick = openView
+        view.onEditClick = open_view
+
+        view.on_start_search = prepare_search_string
 
         router.app.view(view)
 
@@ -87,16 +102,21 @@ class ReaderController(Controller):
         back = None
 
         if type(params) is not dict:
-            back = lambda: router.changeRoute('reader_list')
+            back = lambda string = '': router.changeRoute('reader_list', {'search': string})
         elif params['action'] == 'loan':
-            back = lambda: router.changeRoute('reader_list', {"action": "loan", "book_id": params['book_id']})
+            back = lambda string = '': router.changeRoute('reader_list', {"action": "loan", "book_id": params['book_id'], 'search': string})
 
         def save():
             reader = Reader()
             reader.firstname = view.firstname.get()
             reader.lastname = view.lastname.get()
+
+            if(reader.firstname == '' or reader.lastname == ''):
+                Window.makeErrorMessageBox(Tr('error'), Tr('empty_fields'))
+                return
+
             reader.save()
-            back()
+            back(f"{str(reader.id)} {reader.firstname} {reader.lastname}")
 
         view.onSaveClick = save
 

@@ -44,6 +44,8 @@ class VTemplate(View):
     def goBack():
         pass
 
+    on_start_search = None
+
     def setResults(self, results):
         for widget in self.frame.winfo_children():
             widget.destroy()
@@ -107,4 +109,11 @@ class VTemplate(View):
             width=180,
         ).pack(padx=5, pady=1)
         self.frame = Frame(master, height=100, width=180)
+        Label(self.frame, text=Tr('click_search'), anchor='center').pack(padx=5, pady=1)
         self.frame.pack(padx=5, pady=5)
+
+        if self.on_start_search is not None:
+            self.searchStr.set(self.on_start_search)
+            self.onSearchClick()
+        else:
+            self.searchStr.set('')

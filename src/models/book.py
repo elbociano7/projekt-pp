@@ -9,7 +9,7 @@ class Book(Model):
 
   serializable = ['id', 'author', 'title', 'year', 'image', 'isbn', 'itemcount']
 
-  readonly = True
+  custom_id = True
 
   def loans(self):
     """

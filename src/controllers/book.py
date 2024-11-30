@@ -109,7 +109,7 @@ class BookController(Controller):
             router.changeRoute('book_info', {'book_id': book.id})
 
         def loanBook(days):
-            if not days.isdigit() or int(days) < 1:
+            if not days.isdigit() or int(days) < 1 or int(days) > 999:
                 messagebox.showerror(Tr('error'), Tr('invalid_days'))
                 return
             end_time = datetime.now() + timedelta(days=int(days))

@@ -18,7 +18,7 @@ class Config:
     "DATABASE_PORT": "3306",
     "DATABASE_USER": "root",
     "DATABASE_PASSWORD": "",
-    "DATABASE_NAME": "dane",
+    "DATABASE_NAME": "pp-data",
 
     # BOOK CONFIGURATION
     "DEFAULT_BOOK_COUNT": 10,

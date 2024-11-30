@@ -24,6 +24,7 @@ class Model:
     :type driver: Driver
     """
     serializable = ['id']
+    custom_id = False
     table: str = ""
     id: str = None
     readonly: bool = False
@@ -84,7 +85,9 @@ class Model:
         :return: None
         """
         if self.connected is False:
-            self.driver.insert(self)
+            id = self.driver.insert(self)
+            if not self.custom_id:
+                self.id = id
         else:
             self.driver.update(self)
         self.load()

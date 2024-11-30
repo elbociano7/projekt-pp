@@ -73,5 +73,6 @@ class VTemplate(View):
             width=180,
         ).pack(padx=5, pady=1)
         self.frame = Frame(master, height=100, width=180)
+        Label(self.frame, text=Tr('click_search'), anchor='center').pack(padx=5, pady=1)
         self.frame.pack(padx=5, pady=5)
 

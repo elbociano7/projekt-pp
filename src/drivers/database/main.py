@@ -47,7 +47,8 @@ class Database(Driver):
              insert query.
     :rtype: Any
     """
-    return DBWorker.prepareInsert(object).executeCommit()
+    query = DBWorker.prepareInsert(object).executeCommit()
+    return query.getLastRowId()
 
   def update(self, object):
     """
