@@ -35,7 +35,7 @@ translations = {
     'error': "Błąd",
     'no_results': "Brak wyników dla danej frazy.",
     "search_field_cannot_be_empty": "To pole wyszukiwania nie moze być puste!",
-    'invalid_days': "Błędna ilość dni! \r\n (0-999)",
+    'invalid_days': "Błędna ilość dni! \r\n (1-999)",
     "invalid_book_id": "Błędny identyfikator!",
     "empty_fields": "Pola nie mogą być puste!",
     "click_search": "Wciśnij przycisk \"Szukaj\".",

@@ -15,7 +15,7 @@ Dane o ksiązkach dodawane są do bazy danych podczas wyszukiwania. Przy wejści
 
 ### Obsługa ###
 
-Wypozyczanie ksiązki jest mozliwe poprzez wejście w ksiazke > przycisk wypozycz > wybranie czytelnika > wpisanie ilosci dni (0-999). Zwrocenie mozliwe jest z poziomu czytelnika oraz ksiazki.
+Wypozyczanie ksiązki jest mozliwe poprzez wejście w ksiazke > przycisk wypozycz > wybranie czytelnika > wpisanie ilosci dni (1-999). Zwrocenie mozliwe jest z poziomu czytelnika oraz ksiazki.
 
 Domyslnie po dodaniu czytelnika jest on automatycznie wyszukiwany i aby go wybrać nalezy wcisnąć przycisk znajdujacy się przy uzytkowniku.
 
