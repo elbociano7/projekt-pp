@@ -15,10 +15,10 @@ class Config:
     # DATABASE
     "DATABASE_DRIVER": "database",
     "DATABASE_HOST": "localhost",
-    "DATABASE_PORT": "3301",
+    "DATABASE_PORT": "3306",
     "DATABASE_USER": "root",
     "DATABASE_PASSWORD": "",
-    "DATABASE_NAME": "dane2",
+    "DATABASE_NAME": "pp-data",
 
     # BOOK CONFIGURATION
     "DEFAULT_BOOK_COUNT": 10,
