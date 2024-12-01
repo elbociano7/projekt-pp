@@ -21,6 +21,9 @@ class ApiWorker:
         response = rq.make()
         items = []
 
+        if type(response) is not dict or 'items' not in response.keys() or len(response['items']) == 0:
+            return items
+
         for i in range(0, min(50, len(response['items']))):
             items.append(self.processObject(response['items'][i]))
         return items

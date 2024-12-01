@@ -88,8 +88,12 @@ class ReaderController(Controller):
             loan.get(loan_id)
             loan.returned = True
             loan.save()
+
+        def afterReturn():
             if CONFIG.get("RELOAD_AFTER_RETURN"):
-                router.changeRoute('reader_info', {'book_id': reader.id})
+                router.changeRoute('reader_info', {'reader_id': reader.id})
+
+        view.afterReturn = afterReturn
 
         view.returnBook = returnBook
 

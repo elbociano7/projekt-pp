@@ -9,11 +9,11 @@ class Config:
   #Main configuration data
   configuration = {
     # API
-    "API_DRIVER": "google",
-    "API_URL": "https://www.googleapis.com/",
+    "API_DRIVER": "google", # Default 'google'
+    "API_URL": "https://www.googleapis.com/", # Default 'https://www.googleapis.com/'
 
     # DATABASE
-    "DATABASE_DRIVER": "database",
+    "DATABASE_DRIVER": "database", # Default 'database'
     "DATABASE_HOST": "localhost",
     "DATABASE_PORT": "3306",
     "DATABASE_USER": "root",
@@ -21,11 +21,10 @@ class Config:
     "DATABASE_NAME": "pp-data",
 
     # BOOK CONFIGURATION
-    "DEFAULT_BOOK_COUNT": 10,
-    "STORE_BOOKS_LOCALLY": True,
+    "DEFAULT_BOOK_COUNT": 10, # Default 10
 
     # FORCE RELOAD VIEW AFTER RETURNING A BOOK
-    "RELOAD_AFTER_RETURN": True,
+    "RELOAD_AFTER_RETURN": True, # True is program-bug-safe, False is More-tkinter-bugless-friendly
 
     # PATHS
     "BASE_APP_PATH": os.path.dirname(os.path.realpath(__file__)),

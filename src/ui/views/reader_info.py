@@ -28,6 +28,10 @@ class VTemplate(View):
     def returnBook(loan_id):
         pass
 
+    @staticmethod
+    def afterReturn():
+        pass
+
     available = False
 
     def buildView(self, master):
@@ -79,6 +83,7 @@ class VTemplate(View):
             for item in treeview.selection():
                 self.returnBook(treeview.item(item)['values'][0])
                 treeview.delete(item)
+            self.afterReturn()
 
         (Button(buttons,
                text=Tr('back'),
