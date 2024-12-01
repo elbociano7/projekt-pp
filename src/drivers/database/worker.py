@@ -1,5 +1,6 @@
 from src.configuration import CONFIG
 from src.drivers.database.querybuilder import QueryBuilder
+from src.ui.ui import Window
 
 
 class DBWorker:
@@ -13,13 +14,21 @@ class DBWorker:
 
   @staticmethod
   def checkDatabase():
+    """
+    Checks if database exists and has tables
+    :return:
+    """
     tables = ['readers', 'books', 'loans']
+    db = CONFIG.get('DATABASE_NAME')
     query = QueryBuilder.fromConfig()
     fail = False
     for table in tables:
-      if not query.checkDb(table):
-        fail = True
-        break
+      try:
+        if not query.checkDb(table, db):
+          fail = True
+          break
+      except Exception as e:
+        Window.makeErrorMessageBox('error', str(e))
 
     if fail:
       print("Database check failed. Setting up a new configuration")

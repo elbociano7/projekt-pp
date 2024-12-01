@@ -205,6 +205,10 @@ class QueryBuilder:
 
     @staticmethod
     def getDebugCursor():
+        """
+        Returns a connection and cursor for debugging purposes.
+        :return tuple: connection, cursor
+        """
         connection = connector.connect(
             host=CONFIG.get('DATABASE_HOST'),
             port=CONFIG.get('DATABASE_PORT'),
@@ -214,9 +218,15 @@ class QueryBuilder:
         cursor = connection.cursor(buffered=True)
         return (connection, cursor)
 
-    def checkDb(self, table):
+    def checkDb(self, table, database):
+        """
+        Checks if database exists and has tables
+        :param table: Tables to check
+        :param database: Database name
+        :return: True if exists, False if not exists
+        """
         (conn, cursor) = self.getDebugCursor()
-        query = f"SELECT * FROM information_schema.`TABLES` WHERE `TABLE_NAME` = '{table}'"
+        query = f"SELECT * FROM information_schema.`TABLES` WHERE `TABLE_NAME` = '{table}' AND `TABLE_SCHEMA` = '{database}'"
         cursor.execute(query)
         if cursor.rowcount == 0:
             cursor.close()
@@ -226,16 +236,16 @@ class QueryBuilder:
             return True
 
     def setupDb(self):
+        """
+        Setups blank database configuration from schema.sql file
+        :return:
+        """
         (conn, cursor) = self.getDebugCursor()
-        lines = []
         with open(os.path.dirname(os.path.realpath(__file__))+"/schema.sql") as f:
             lines = f.readlines()
         for line in lines:
             line = line.strip('\n')
             cursor.execute(line)
-        #cursor.execute(f.read(), multi=True)
-        #cursor.close()
-        #conn.close()
 
 
 

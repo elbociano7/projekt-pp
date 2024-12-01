@@ -9,7 +9,10 @@ class Database(Driver):
   """
 
   def checkDatabase(self):
-
+    """
+    Self database check
+    :return:
+    """
     DBWorker.checkDatabase()
 
 
