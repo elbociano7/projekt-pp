@@ -1,5 +1,10 @@
 # PROJEKT
 
+## Pobieranie
+
+Najłatwiej wejść w release'y i tam z pierwszego (i ostatniego) pobrać paczkę z kodem źródłowym. Następnie rozpakowujemy archiwum i w nim robimy odpowiednie rzeczy wg. instrukcji na dole.
+Opcja druga to klonowanie repozytorium za pomocą gita (trzeba mieć gita zainstalowanego): `git clone https://github.com/elbociano7/projekt-pp`
+
 ## Uruchomienie aplikacji
 
 ### Wymagania
